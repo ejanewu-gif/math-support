@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>國小數學學習扶助考古題診斷導航平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/print-engine.css" />
+</head>
+<body class="min-h-screen">
+
+  <!-- 主互動介面殼層 -->
+  <div id="app-shell" class="pb-16">
+    <!-- 頂部導航列 -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b-2 border-emerald-100 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-700 to-teal-600 text-white flex items-center justify-center text-xl font-black shadow-md">
+            數
+          </div>
+          <div>
+            <h1 class="text-lg sm:text-xl font-black tracking-tight text-slate-900">國小數學・學習扶助考古題診斷導航平台</h1>
+            <p class="text-xs text-slate-500 font-medium">115年國小 1–6 年級 150 題真題題卡 × 教育部基本學習內容 203 指標 × 謝老師實測弱點專題</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="relative hidden md:block">
+            <input id="global-search" type="text" placeholder="搜尋指標碼 (如 NC-4-9)、單元或關鍵字…"
+              class="w-64 pl-3.5 pr-8 py-2 rounded-xl text-sm bg-slate-50 border border-slate-300 focus:outline-none focus:border-emerald-600 focus:bg-white shadow-inner" />
+            <span class="absolute right-2.5 top-2.5 text-slate-400 text-xs">🔍</span>
+          </div>
+
+          <!-- 高對比組卷列印按鈕 -->
+          <button id="open-cart-btn" class="btn-print-cta px-4 py-2.5 rounded-xl text-sm font-black flex items-center gap-2">
+            <span>🖨️ 練習卷列印</span>
+            <span id="cart-count-badge" class="px-2 py-0.5 rounded-full bg-white text-amber-800 text-xs font-black shadow-inner">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+      <!-- 頂部立體 KPI 摘要卡 -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="edu-card p-4">
+          <div class="text-xs font-bold text-slate-500">115年國小數學真題</div>
+          <div class="text-2xl font-black text-emerald-800 mt-1">150 題</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">1–6年級高解析切圖・快取穿透</div>
+        </div>
+        <div class="edu-card p-4">
+          <div class="text-xs font-bold text-slate-500">官方基本學習內容碼</div>
+          <div class="text-2xl font-black text-teal-800 mt-1">203 指標</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">涵蓋 119 條 108 課綱・612 子技能</div>
+        </div>
+        <div class="edu-card p-4">
+          <div class="text-xs font-bold text-slate-500">謝老師弱點實測專題</div>
+          <div class="text-2xl font-black text-rose-700 mt-1">27 份統計</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">全體／高分／低分組誘答自動警示</div>
+        </div>
+        <div class="edu-card p-4">
+          <div class="text-xs font-bold text-slate-500">實體練習卷排版引擎</div>
+          <div class="text-2xl font-black text-amber-700 mt-1">97% 滿版</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">預設 A4 直向 6 題＋21mm 算式欄</div>
+        </div>
+      </section>
+
+      <!-- 三維互鎖導航列 + 年級選擇器 -->
+      <section class="edu-panel p-4 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center gap-2">
+          <button data-nav-view="exam" class="nav-tab active px-4 py-2.5 rounded-xl text-sm font-extrabold">📊 視角三：歷年題本熱圖</button>
+          <button data-nav-view="progress" class="nav-tab px-4 py-2.5 rounded-xl text-sm font-extrabold">📅 視角一：進度預警</button>
+          <button data-nav-view="standards" class="nav-tab px-4 py-2.5 rounded-xl text-sm font-extrabold">🎯 視角二：基本學習指標</button>
+          <button data-nav-view="teacher" class="nav-tab px-4 py-2.5 rounded-xl text-sm font-extrabold">📚 謝老師弱點專題</button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="text-xs font-extrabold text-slate-500 mr-1">切換年級：</span>
+          <button data-set-grade="1">一年級</button>
+          <button data-set-grade="2">二年級</button>
+          <button data-set-grade="3">三年級</button>
+          <button data-set-grade="4">四年級</button>
+          <button data-set-grade="5">五年級</button>
+          <button data-set-grade="6">六年級</button>
+        </div>
+      </section>
+
+      <!-- 主內容動態渲染區 -->
+      <div id="main-content"></div>
+    </main>
+  </div>
+
+  <!-- 單題深度診斷 Modal -->
+  <div id="diagnostic-modal" class="hidden fixed inset-0 z-50 bg-slate-900/55 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div id="modal-body" class="bg-[#f7faf8] border-2 border-emerald-200 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[92vh] overflow-y-auto p-5 sm:p-6"></div>
+  </div>
+
+  <!-- 組卷購物車與 97% 滿版列印抽屜 -->
+  <div id="cart-drawer" class="hidden fixed inset-0 z-50 bg-slate-900/45 backdrop-blur-xs flex justify-end">
+    <div class="bg-[#f8faf9] w-full max-w-md h-full shadow-2xl border-l-2 border-emerald-200 flex flex-col">
+      <div class="p-5 bg-white border-b border-slate-200 flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-black text-slate-900">🖨️ 真題練習卷組卷中心</h2>
+          <p class="text-xs text-slate-500 mt-0.5">已選 <span id="cart-drawer-count" class="font-black text-amber-700">0</span> 題｜<span id="cart-page-estimate"></span></p>
+        </div>
+        <button id="close-cart-btn" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700">✕</button>
+      </div>
+
+      <div class="p-4 space-y-3 bg-emerald-50/60 border-b border-emerald-100">
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1">練習卷抬頭標題</label>
+          <input id="print-title-input" type="text" value="國小數學學習扶助・個別化補救練習卷"
+            class="w-full px-3 py-2 rounded-xl text-sm bg-white border border-slate-300 focus:outline-none focus:border-emerald-600" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold text-slate-700 mb-1.5">物理毫米 97% 滿版排版模式（雙層 @page 動態注入）</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="p-2.5 rounded-xl bg-white border-2 border-emerald-600 cursor-pointer flex items-start gap-2 shadow-sm">
+              <input type="radio" name="print-mode" value="portrait" checked class="mt-0.5 accent-emerald-700" />
+              <div class="text-xs">
+                <div class="font-extrabold text-emerald-900">A4 直向・滿版 6 題</div>
+                <div class="text-[10px] text-slate-500">學扶首選・21mm 算式欄</div>
+              </div>
+            </label>
+            <label class="p-2.5 rounded-xl bg-white border border-slate-300 cursor-pointer flex items-start gap-2 shadow-sm">
+              <input type="radio" name="print-mode" value="landscape" class="mt-0.5 accent-emerald-700" />
+              <div class="text-xs">
+                <div class="font-extrabold text-slate-800">A4 橫向・滿版 4 題</div>
+                <div class="text-[10px] text-slate-500">大字版・圖45mm＋算式23mm</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <label class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+          <input id="print-include-ans" type="checkbox" checked class="accent-emerald-700" />
+          最後一頁附上「教師診斷解答與錯誤碼速查頁」
+        </label>
+      </div>
+
+      <div id="cart-items-list" class="flex-1 overflow-y-auto p-4 space-y-2.5"></div>
+
+      <div class="p-4 bg-white border-t border-slate-200 flex items-center gap-2.5">
+        <button id="clear-cart-btn" class="px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700">清空</button>
+        <button id="trigger-print-btn" class="btn-print-cta flex-1 py-2.5 px-4 rounded-xl text-sm font-black">
+          🖨️ 立即輸出 97% 滿版練習卷
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 通知 -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold shadow-xl opacity-0 translate-y-3 pointer-events-none transition-all duration-200"></div>
+
+  <!-- 實體列印專用容器（螢幕隱藏，@media print 專屬展開） -->
+  <div id="print-root"></div>
+
+  <script src="js/master-db.js"></script>
+  <script src="js/print-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+/* 清爽教育風：淺色護眼背景 + 立體感卡片 + 高對比互動元件 */
+:root {
+  --bg-canvas: #f1f5f3;
+  --bg-surface: #ffffff;
+  --ink-primary: #14261f;
+  --ink-secondary: #475b53;
+  --brand-primary: #0f6b54;
+  --brand-primary-dark: #0a4f3d;
+  --brand-accent: #d97706;
+  --border-card: #d1ddd7;
+  --shadow-card: 0 6px 18px -4px rgba(15, 40, 30, 0.10), 0 2px 6px -1px rgba(15, 40, 30, 0.06);
+  --shadow-card-hover: 0 14px 28px -6px rgba(15, 40, 30, 0.16), 0 6px 12px -3px rgba(15, 40, 30, 0.08);
+  --shadow-panel: 0 10px 26px -6px rgba(15, 40, 30, 0.12), 0 3px 8px -2px rgba(15, 40, 30, 0.06);
+}
+
+html, body {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 立體卡片基礎樣式 */
+.edu-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-card);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.edu-card-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: #8eb5a5;
+}
+
+.edu-panel {
+  background: var(--bg-surface);
+  border: 1.5px solid #cbd9d2;
+  border-radius: 18px;
+  box-shadow: var(--shadow-panel);
+}
+
+/* 三維互鎖分頁按鈕 */
+.nav-tab {
+  position: relative;
+  border: 1.5px solid #cbd9d2;
+  background: #ffffff;
+  color: #2f483e;
+  box-shadow: 0 2px 6px rgba(15, 40, 30, 0.06);
+  transition: all 0.16s ease;
+}
+.nav-tab:hover {
+  border-color: #0f6b54;
+  color: #0f6b54;
+  transform: translateY(-1px);
+}
+.nav-tab.active {
+  background: linear-gradient(135deg, #0f6b54 0%, #158468 100%);
+  color: #ffffff;
+  border-color: #0a4f3d;
+  box-shadow: 0 6px 14px -3px rgba(15, 107, 84, 0.42);
+}
+
+/* 高對比列印按鈕 */
+.btn-print-cta {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff;
+  border: 1.5px solid #92400e;
+  box-shadow: 0 6px 16px -3px rgba(180, 83, 9, 0.45);
+  transition: all 0.16s ease;
+}
+.btn-print-cta:hover {
+  background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -3px rgba(146, 64, 14, 0.55);
+}
+
+/* 熱圖色彩 (紅<50%, 黃50-69%, 綠>=70%) */
+.heat-red {
+  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+  border: 2px solid #f43f5e;
+  color: #9f1239;
+}
+.heat-yellow {
+  background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
+  border: 2px solid #f59e0b;
+  color: #92400e;
+}
+.heat-green {
+  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid #10b981;
+  color: #065f46;
+}
+
+/* 題卡縮圖保護框 */
+.q-img-frame {
+  background: #ffffff;
+  border: 1px solid #e2ebe7;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.q-img-frame img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 縱向鏈結箭頭 */
+.chain-box {
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1.5px solid transparent;
+}
+.chain-pre { background: #f0f9ff; border-color: #bae6fd; }
+.chain-core { background: #ecfdf5; border-color: #6ee7b7; box-shadow: 0 3px 10px rgba(16, 185, 129, 0.15); }
+.chain-ext { background: #faf5ff; border-color: #e9d5ff; }
+
+/* 概念卡通對話氣泡 */
+.bubble-myth {
+  background: #fff1f2;
+  border: 1.5px solid #fda4af;
+  border-radius: 14px 14px 14px 4px;
+}
+.bubble-break {
+  background: #eff6ff;
+  border: 1.5px solid #93c5fd;
+  border-radius: 14px 14px 4px 14px;
+}
+.bubble-wrap {
+  background: #ecfdf5;
+  border: 1.5px solid #6ee7b7;
+  border-radius: 14px 14px 14px 4px;
+}
+
+/* 預覽列印區在螢幕模式隱藏 */
+#print-root {
+  display: none;
+}
+
+/* 自訂捲軸 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #e8efec; }
+::-webkit-scrollbar-thumb { background: #9db7ac; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #6e9283; }
